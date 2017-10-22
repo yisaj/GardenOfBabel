@@ -1,0 +1,62 @@
+(0000 root bootstrap) 01 
+(0001 stem bootstrap) 01 
+(0002 leaf stem bootstrap) 01 
+(0003 leaf bootstrap) 01
+(0004 flower stem bootstrap) 01 
+(0005 flower bootstrap) 01 
+(0006 petal stem bootstrap) 01 
+(0007 petal bootstrap) 01 
+
+(0008 root shape) 01
+(0009 stem shape) 01
+(000a leaf stem shape) 01
+(000b leaf shape) 01
+(000c flower stem shape) 01
+(000d flower shape) 01
+(000e petal stem shape) 01
+(000f petal shape) 01
+
+(0010 root line color) 01
+(0011 stem line color) 01
+(0012 leaf stem color) 01
+(0013 leaf color) 01
+(0014 flower stem line color) 01
+(0015 flower line color) 01
+(0016 petal stem line color) 01
+(0017 petal line color) 01
+
+(0018 root fill color) 01
+(0019 stem fill color) 01
+(001a leaf stem fill color) 01
+(001b leaf fill color) 01
+(001c flower stem fill color) 01
+(001d flower fill color) 01
+(001e petal stem fill color) 01
+(001f petal fill color) 01
+
+(0020 root height) 01
+(0021 stem height) 01
+(0022 leaf stem height) 01
+(0023 leaf height) 01
+(0024 flower stem height) 01
+(0025 flower height) 01
+(0026 petal stem height) 01
+(0027 petal height) 01
+
+(0028 root width) 01
+(0029 stem width) 01
+(002a leaf stem width) 01
+(002b leaf width) 01
+(002c flower stem width) 01
+(002d flower width) 01
+(002e petal stem width) 01
+(002f petal width) 01
+
+(0030 root direction) 01
+(0031 stem direction) 01
+(0032 leaf stem direction) 01
+(0033 leaf direction) 01
+(0034 flower stem direction) 01
+(0035 flower direction) 01
+(0036 petal stem direction) 01
+(0037 petal direction) 01

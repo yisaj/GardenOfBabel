@@ -1,0 +1,62 @@
+(0000 root bootstrap) 0 220008 220010 220018 220020 220028 220030 3200003000620001 1 
+(0001 stem bootstrap) 0 220009 220010 220019 220021 220029 220031 A2000030000 F2000020008 3200023000620001 F2000020008 3200023000620002 E2000020007 3200023000620004 1
+(0002 leaf stem bootstrap) 0 22000a 220010 220022 22002a 220032 3200003000620003 1 
+(0003 leaf bootstrap) 0 22000b 220010 220023 22002b 220033 1
+(0004 flower stem bootstrap) 0 22000c 220010 220024 22002c 220034 3200003000620005 1 
+(0005 flower bootstrap) 0 22000c 220010 220025 22002d 220035 1
+(0006 petal stem bootstrap) 01 
+(0007 petal bootstrap) 01 
+
+(0008 root shape) 0 420003 1
+(0009 stem shape) 0 420000 1
+(000a leaf stem shape) 0 420000 1
+(000b leaf shape) 0 420002 1
+(000c flower stem shape) 0 420000 1
+(000d flower shape) 0 420004 1
+(000e petal stem shape) 01
+(000f petal shape) 01
+
+(0010 root line color) 0 5228ab10 1
+(0011 stem line color) 0 5230c1aa 1
+(0012 leaf stem color) 0 5291be3a 1
+(0013 leaf color) 0 528ed9a1 1
+(0014 flower stem line color) 0 528db1a3 1
+(0015 flower line color) 0 52b67a1e 1
+(0016 petal stem line color) 01
+(0017 petal line color) 01
+
+(0018 root fill color) 0 62340a8b 1
+(0019 stem fill color) 0 62fc012e 1
+(001a leaf stem fill color) 0 628afe62 1
+(001b leaf fill color) 0 625e9a1d 1
+(001c flower stem fill color) 0 623f4ad1 1
+(001d flower fill color) 0 62890de1 1
+(001e petal stem fill color) 01
+(001f petal fill color) 01
+
+(0020 root height) 0 720040 1
+(0021 stem height) 0 720064 A2000030000 E2000020001 720032 1
+(0022 leaf stem height) 0 720000 1
+(0023 leaf height) 0 720064 1
+(0024 flower stem height) 0 720000 1
+(0025 flower height) 0 720064 1
+(0026 petal stem height) 01
+(0027 petal height) 01
+
+(0028 root width) 0 820040 1
+(0029 stem width) 0 82000a 1
+(002a leaf stem width) 0 820000 1
+(002b leaf width) 0 820032 1
+(002c flower stem width) 0 820000 1
+(002d flower width) 0 820064 1
+(002e petal stem width) 01
+(002f petal width) 01
+
+(0030 root direction) 0 920000 1
+(0031 stem direction) 0 A2000130006 A2000030000 B200002000420002 E2000020000 B20001200002001e E2000020001 B20001200012001e A2000030000 E2000020001 B20001200002000f 91 1
+(0032 leaf stem direction) 01
+(0033 leaf direction) 01
+(0034 flower stem direction) 01
+(0035 flower direction) 01
+(0036 petal stem direction) 01
+(0037 petal direction) 01
