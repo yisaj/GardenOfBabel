@@ -10,7 +10,7 @@
 (0008 root shape) 0 420003 1
 (0009 stem shape) 0 420000 1
 (000a leaf stem shape) 0 420000 1
-(000b leaf shape) 0 420002 1
+(000b leaf shape) 0 420001 1
 (000c flower stem shape) 0 420000 1
 (000d flower shape) 0 420004 1
 (000e petal stem shape) 01

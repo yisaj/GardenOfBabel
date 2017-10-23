@@ -3,7 +3,7 @@
 #include <cmath>
 #include <iostream>
 
-#define PI 3.14159265
+static const double PI = 3.14159265;
 
 Cell::Cell(Plant *plant, Cell *parent, Genome *genome, int cellNumber, int budPoint, int direction, int startGene) {
   m_plant = plant;
@@ -430,6 +430,7 @@ void Cell::positionCell(int budPoint) {
   double h;
   double cos36;
   double sin36;
+  double sin72;
 
   switch (parentShape) {
     // line; height is length
@@ -452,10 +453,9 @@ void Cell::positionCell(int budPoint) {
       m_y = parentY + parentHeight * cost;
     }
     break;
-    // isosceles triangle; width is top side length, height is side side length
+    // isosceles triangle; width is top side length, height is center length
   case 1:
     budPoint = budPoint % 4;
-    height = sqrt(pow(parentHeight, 2) - pow(parentWidth, 2));
     
     if (budPoint == 0) {
       m_x = parentX;
@@ -470,13 +470,13 @@ void Cell::positionCell(int budPoint) {
     }
     // top left vertex
     else if (budPoint == 2) {
-      m_x = parentX + height * sint - parentWidth / 2 * cost;
-      m_y = parentY + height * cost + parentWidth / 2 * sint;
+      m_x = parentX + parentHeight * sint - parentWidth / 2.0 * cost;
+      m_y = parentY + parentHeight * cost + parentWidth / 2.0 * sint;
     }
     // top right vertex
     else if (budPoint == 3) {
-      m_x = parentX + height * sint + parentWidth / 2 * cost;
-      m_y = parentY + height * cost - parentWidth / 2 * sint;
+      m_x = parentX + parentHeight * sint + parentWidth / 2.0 * cost;
+      m_y = parentY + parentHeight * cost - parentWidth / 2.0 * sint;
     }
     break;
     // rhombus; width is horizontal axis, height is vertical axis
@@ -508,39 +508,39 @@ void Cell::positionCell(int budPoint) {
       m_y = parentY + parentHeight / 2 * cost - parentWidth / 2 * sint;
     }
     break;
-    // pentagon; height is radius length
+    // pentagon; height is perpendicular from base to point
   case 3:
-    budPoint = budPoint % 6;
-    
-    // center
+    budPoint = budPoint % 6;    
+
+    // 6 o clock vertex
     if (budPoint == 0) {
       m_x = parentX;
       m_y = parentY;
     }
-    // 12 o clock vertex
-    else if (budPoint == 1) {
-      m_x = parentX + parentHeight * sint;
-      m_y = parentY + parentHeight * cost;
+    // center
+    else if (budPoint == 1) {      
+      m_x = parentX + parentHeight * tan(54 / 180.0 * PI) / tan(72 / 180.0 * PI) * sint;
+      m_y = parentY + parentHeight * tan(54 / 180.0 * PI) / tan(72 / 180.0 * PI) * cost;
     }
-    // 2 o clock vertex
+    // 8 o clock vertex
     else if (budPoint == 2) {
-      m_x = parentX + parentHeight * sin((parentDir + 72) * PI / 180.0);
-      m_y = parentY + parentHeight * cos((parentDir + 72) * PI / 180.0);
+      m_x = parentX + 2 * parentHeight / tan(72 / 180.0 * PI) * sin((parentDir + 306) * PI / 180.0);
+      m_y = parentY + 2 * parentHeight / tan(72 / 180.0 * PI) * cos((parentDir + 306) * PI / 180.0);
     }
-    // 5 o clock vertex
+    // 11 o clock vertex
     else if (budPoint == 3) {
-      m_x = parentX + parentHeight * sin((parentDir + 144) * PI / 180.0);
-      m_y = parentY + parentHeight * cos((parentDir + 144) * PI / 180.0);
+      m_x = parentX + parentHeight / cos(18 / 180.0 * PI) * sin((parentDir + 342) * PI / 180.0);
+      m_y = parentY + parentHeight / cos(18 / 180.0 * PI) * cos((parentDir + 342) * PI / 180.0);
     }
-    // 7 o clock vertex
+    // 1 o clock vertex
     else if (budPoint == 4) {
-      m_x = parentX + parentHeight * sin((parentDir + 216) * PI / 180.0);
-      m_y = parentY + parentHeight * cos((parentDir + 216) * PI / 180.0);
+      m_x = parentX + parentHeight / cos(18 / 180.0 * PI) * sin((parentDir + 18) * PI / 180.0);
+      m_y = parentY + parentHeight / cos(18 / 180.0 * PI) * cos((parentDir + 18) * PI / 180.0);
     }
-    // 10 o clock vertex
+    // 4 o clock vertex
     else if (budPoint == 5) {
-      m_x = parentX + parentHeight * sin((parentDir + 288) * PI / 180.0);
-      m_y = parentY + parentHeight * cos((parentDir + 288) * PI / 180.0);
+      m_x = parentX + 2 * parentHeight / tan(72 / 180.0 * PI) * sin((parentDir + 54) * PI / 180.0);
+      m_y = parentY + 2 * parentHeight / tan(72 / 180.0 * PI) * cos((parentDir + 54) * PI / 180.0);
     }
     break;
     // ellipse; width is horizontal axis, height is vertical axis
