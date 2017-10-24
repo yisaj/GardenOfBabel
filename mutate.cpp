@@ -37,7 +37,7 @@ int main (int argc, char *argv[]) {
   while (!validGenome) {
     mutantGenome = "";
     bool comment = false;
-    for (int i = 0; i < genome.size(); i++) {
+    for (unsigned int i = 0; i < genome.size(); i++) {
       if (!comment) {
         if (genome[i] == '(') {
           comment = true;

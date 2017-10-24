@@ -7,8 +7,10 @@
 using namespace std;
 
 Genome::Genome(string text) {
+  cout << "===========" << endl << text << endl;
+
   bool comment = false;
-  for (int i = 0; i < text.size(); i++) {
+  for (unsigned int i = 0; i < text.size(); i++) {
     if (!comment) {
       if (text[i] == '(') {
         comment = true;

@@ -1,96 +1,69 @@
+#include <random>
 #include <string>
-#include <cstring>
 #include <fstream>
-#include <ctime>
+#include <iostream>
 #include "Genome.hpp"
 
 using namespace std;
 
 int main(int argc, char* argv[]) {
-  // three arguments: parent one genome text file, parent two file, destination file
-  if (argc != 4) {return -1;}
+  if (argc != 4) { return 1; }
 
-  // read parent one genome text
+  string parentOneFileName = argv[1];
+  string parentTwoFileName = argv[2];
+  string childFileName = argv[3];
+
   string buf;
-  bool comment = false;
-  ifstream parentOneFile;
-  string parentOneText;
-
-  parentOneFile.open(argv[1]);
-  while (!parentOneFile.eof()) {
-    parentOneFile >> buf;
-
-    if (buf.front() == '(' && !comment) {
-      comment = true;                    
-    }                                    
-    if (!comment) {                      
-      parentOneText += buf;                    
-    }                                    
-    if (buf.back() == ')' && comment) {  
-      comment = false;                   
-    }                                    
+  string parentOneGenome;
+  ifstream parentOneFile(parentOneFileName);
+  if (!parentOneFile.is_open()) { return 2; }
+  while (parentOneFile >> buf) {
+    parentOneGenome += buf;
   }
   parentOneFile.close();
 
-  // read parent two genome text
-  comment = false;
-  ifstream parentTwoFile;
-  string parentTwoText;
-
-  parentTwoFile.open(argv[2]);
-  while (!parentTwoFile.eof()) {
-    parentTwoFile >> buf;
-
-    if (buf.front() == '(' && !comment) {
-      comment = true;                    
-    }                                    
-    if (!comment) {                      
-      parentTwoText += buf;                    
-    }                                    
-    if (buf.back() == ')' && comment) {  
-      comment = false;                   
-    }                                    
+  string parentTwoGenome;
+  ifstream parentTwoFile(parentTwoFileName);
+  if (!parentTwoFile.is_open()) { return 3; }
+  while (parentTwoFile >> buf) {
+    parentTwoGenome += buf;
   }
   parentTwoFile.close();
 
-  // construct plant objects
-  Genome parentOneGen = Genome(parentOneText);
-  Genome parentTwoGen = Genome(parentTwoText);
-  
-  if (parentOneGen.getGeneCount() != parentTwoGen.getGeneCount()) {return -1;}
+  Genome parentOne(parentOneGenome);
+  Genome parentTwo(parentTwoGenome);
 
-  // seed rng
-  srand(time(NULL));
+  cout << parentOne.getGeneCount() << " " << parentTwo.getGeneCount() << endl;
+  if (parentOne.getGeneCount() != parentTwo.getGeneCount()) { return 4; }
 
-  // randomly choose genes to add to destination text file
-  string child;
-  int numGenes = parentOneGen.getGeneCount();
-  for (int i = 0; i < numGenes; i++) {
+  string childGenome;
+  random_device r;
+  default_random_engine engine(r());
+  uniform_int_distribution<int> dist(0, 1);
+
+  for (int i = 0; i < parentOne.getGeneCount(); i++) {
     int geneStart;
     int geneEnd;
-    int r = rand() % 2;
-    
-    if (r == 0) {
-      geneStart = parentOneGen.getGeneStart(i);
-      geneEnd = parentOneGen.getGeneEnd(i);
 
-      child += parentOneGen.getSubstring(geneStart, geneEnd - geneStart);
+    if (dist(engine) == 0) {
+      geneStart = parentOne.getGeneStart(i);
+      geneEnd = parentOne.getGeneEnd(i);
+
+      childGenome += parentOne.getSubstring(geneStart, geneEnd - geneStart);
     }
     else {
-      geneStart = parentTwoGen.getGeneStart(i);
-      geneEnd = parentTwoGen.getGeneEnd(i);
+      geneStart = parentTwo.getGeneStart(i);
+      geneEnd = parentTwo.getGeneEnd(i);
 
-      child += parentTwoGen.getSubstring(geneStart, geneEnd - geneStart);
+      childGenome += parentTwo.getSubstring(geneStart, geneEnd - geneStart);
     }
-
-    
   }
 
-  // save to destination text file
-  ofstream dest;              
-  dest.open(argv[3]);
-  dest << child;
-  dest.close();
+  ofstream childFile(childFileName);
+  if (!childFile.is_open()) { return 4; }
+  childFile << childGenome;
+  childFile.close();
 
   return 0;
+
 }

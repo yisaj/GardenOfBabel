@@ -139,7 +139,6 @@ void Cell::setLineColor(int lineColor) {
 // PRIVATE UTILS
 int Cell::getArgument(int *index, bool hex) {
   char prefix = m_genome->getChar(*index);
-  char ins = m_genome->getChar(*index - 1);
   short s;
 
   // immediate value
@@ -314,7 +313,6 @@ void Cell::executeInstruction(int *index, int recursionDepth) {
   case 'C':
     ++*index;                                      
     times = getArgument(index);
-    placeholder;
     cout << "repeating instruction " << m_genome->getChar(*index) << " " << times << " times" << endl;
     for (int j = 0; j < times; j++) {
       placeholder = *index;
@@ -425,12 +423,8 @@ void Cell::positionCell(int budPoint) {
   double cost = cos(theta);
 
   double avgY;
-  double height;
   double w;
   double h;
-  double cos36;
-  double sin36;
-  double sin72;
 
   switch (parentShape) {
     // line; height is length
@@ -463,7 +457,7 @@ void Cell::positionCell(int budPoint) {
     }
     // center
     else if (budPoint == 1) {
-      avgY = height * 2 / 3;
+      avgY = parentHeight * 2 / 3;
       
       m_x = parentX + avgY * sint;
       m_y = parentY + avgY * cost;

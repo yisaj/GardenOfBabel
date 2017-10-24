@@ -16,6 +16,7 @@ void drawLine(ofstream *svgFile, Cell *cell) {
   double x = cell->getX();
   double y = cell->getY();
   int height = cell->getHeight();
+  // int width = cell->getWidth();
   int direction = cell->getDirection();
   int lineColor = cell->getLineColor() & 0x00ffffff;
 
@@ -67,7 +68,7 @@ void drawPentagon(ofstream *svgFile, Cell *cell) {
   double x = cell->getX();
   double y = cell->getY();
   int height = cell->getHeight();
-  int width = cell->getWidth();
+  // int width = cell->getWidth();
   int direction = cell->getDirection();
   int lineColor = cell->getLineColor() & 0x00ffffff;
   int fillColor = cell->getFillColor() & 0x00ffffff;
@@ -113,11 +114,9 @@ int main(int argc, char *argv[]) {
   ifstream genomeFile(genomeFileName);
   if (!genomeFile.is_open()) { return 2; }
   
-  bool comment = false;
   char buf;
   string genome;
-  
-  while (genomeFile.get(buf)) {
+  while (genomeFile >> buf) {
     genome += buf;
   }
 
@@ -127,7 +126,7 @@ int main(int argc, char *argv[]) {
   stack<Cell *> undrawnCells;
   undrawnCells.push(plant.getRootCell());
 
-  ofstream svgFile(argv[2]);
+  ofstream svgFile(svgFileName);
   if (!svgFile.is_open()) { return 3; }
 
   svgFile << "<svg width=\"1000\" height=\"1000\" xmlns=\"http://www.w3.org/2000/svg\">\n"

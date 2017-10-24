@@ -1,6 +1,9 @@
 *.env
-
 *~
 #*#
 *.svg
-*.out
+*.o
+render
+cross
+mutate
+flowergenomes/
