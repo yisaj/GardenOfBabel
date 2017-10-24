@@ -7,11 +7,24 @@
 using namespace std;
 
 Genome::Genome(string text) {
-  m_text = text;
+  bool comment = false;
+  for (int i = 0; i < text.size(); i++) {
+    if (!comment) {
+      if (text[i] == '(') {
+        comment = true;
+      }
+      else if (text[i] != ' ' && text[i] != '\n' && text[i] != '\r') {
+        m_text += text[i];
+      }
+    }
+    else if (comment && text[i] == ')') {
+      comment = false;
+    }
+  }
   
-  int e = processGeneIndices(text);
+  int e = processGeneIndices(m_text);
   if (e != -1) {
-    throw runtime_error("malformed genome at " + to_string(e) + " around " + text.substr(e, 7));
+    throw runtime_error("malformed genome at " + to_string(e) + " around " + m_text.substr(e, 7));
   }
   m_geneCount = m_gene_starts.size();
 }
