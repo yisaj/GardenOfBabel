@@ -55,11 +55,11 @@ class Cell {
   
   int m_accumulator[2];
 
-  int getArgument(int *index, bool hex = false);
+  unsigned int getArgument(int *index, bool hex = false);
   void executeInstruction(int *index, int recursionDepth);
   int getAttribute(int att);
   void positionCell(int budPoint);
-  void processGene(int geneNum, int recursionDepth);
+  void processGene(unsigned int geneNum, int recursionDepth);
 };
 
 #endif

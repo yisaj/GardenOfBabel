@@ -1,3 +1,4 @@
+.*
 *.env
 *~
 #*#
@@ -7,3 +8,6 @@ render
 cross
 mutate
 flowergenomes/
+node_modules/
+bin/
+!bin/Makefile

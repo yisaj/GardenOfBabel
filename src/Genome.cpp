@@ -7,7 +7,7 @@
 using namespace std;
 
 Genome::Genome(string text) {
-  cout << "===========" << endl << text << endl;
+  cerr << "===========" << endl << text << endl;
 
   bool comment = false;
   for (unsigned int i = 0; i < text.size(); i++) {

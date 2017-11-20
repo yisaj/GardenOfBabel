@@ -20,11 +20,11 @@ Cell::Cell(Plant *plant, Cell *parent, Genome *genome, int cellNumber, int budPo
   m_fill_color = 0x7cffc2;
   m_height = 0;
   m_width = 0;
-  cout << cellNumber << " Cell Constructed" << endl;
+  cerr << cellNumber << " Cell Constructed" << endl;
 }
 
 void Cell::grow() {
-  cout << m_cell_number << " Cell Growing" << endl;
+  cerr << m_cell_number << " Cell Growing" << endl;
   if (m_parent == nullptr) {
     m_x = 0;
     m_y = 0;
@@ -137,13 +137,13 @@ void Cell::setLineColor(int lineColor) {
 }
 
 // PRIVATE UTILS
-int Cell::getArgument(int *index, bool hex) {
+unsigned int Cell::getArgument(int *index, bool hex) {
   char prefix = m_genome->getChar(*index);
   short s;
 
   // immediate value
   if (prefix == '2' && hex) {
-    cout << "HEXED" << endl;
+    cerr << "HEXED" << endl;
     *index += 7;
     return stoi(m_genome->getSubstring(*index - 6, 6), 0, 16);
   }
@@ -201,9 +201,9 @@ void Cell::executeInstruction(int *index, int recursionDepth) {
   int accNum;
   char ins;
 
-  //cout << "index: " << *index << endl;
+  //cerr << "index: " << *index << endl;
   if (m_genome->getChar(*index) != '0') {
-  cout << "ins: " << m_genome->getChar(*index) << endl;
+  cerr << "ins: " << m_genome->getChar(*index) << endl;
   }
 
   switch (m_genome->getChar(*index)) {
@@ -211,7 +211,7 @@ void Cell::executeInstruction(int *index, int recursionDepth) {
   case '2':
     ++*index;
     nextGene = getArgument(index) % m_genome->getGeneCount();
-    cout << "jumping to gene " << nextGene << endl;
+    cerr << "jumping to gene " << nextGene << endl;
     processGene(nextGene, recursionDepth + 1);
     break;
     // spawn new cell
@@ -220,7 +220,7 @@ void Cell::executeInstruction(int *index, int recursionDepth) {
     for (int j = 0; j < 3; j++) {
       arguments[j] = getArgument(index);
     }
-    cout << "spawning cell at position " << arguments[0] << ", with direction " << arguments[1] << ", and gene " << arguments[2] << endl;
+    cerr << "spawning cell at position " << arguments[0] << ", with direction " << arguments[1] << ", and gene " << arguments[2] << endl;
     m_children.push_back(new Cell(m_plant, this, m_genome, m_cell_number + 1, arguments[0], arguments[1], arguments[2]));
     m_plant->incNumCells();
     break;
@@ -228,42 +228,42 @@ void Cell::executeInstruction(int *index, int recursionDepth) {
   case '4':
     ++*index;
     argument = getArgument(index);
-    cout << "setting shape to " << argument << endl;
+    cerr << "setting shape to " << argument << endl;
     setShape(argument);                                             
     break;
     // set line color
   case '5':
     ++*index;
     argument = getArgument(index, true);
-    cout << "setting line color to " << argument << endl;
+    cerr << "setting line color to " << argument << endl;
     setLineColor(argument);
     break;
     // set fill color
   case '6':
     ++*index;
     argument = getArgument(index, true);
-    cout << "setting fill color to " << argument << endl;
+    cerr << "setting fill color to " << argument << endl;
     setFillColor(argument);
     break;
     // set height
   case '7':
     ++*index;
     argument = getArgument(index);
-    cout << "setting height to " << argument << endl;
+    cerr << "setting height to " << argument << endl;
     setHeight(argument);
     break;
     // set width
   case '8':
     ++*index;
     argument = getArgument(index);
-    cout << "setting width to " << argument << endl;
+    cerr << "setting width to " << argument << endl;
     setWidth(argument);
     break;
     // set direction
   case '9':
     ++*index;
     argument = getArgument(index);
-    cout << "setting direction to " << argument << endl;
+    cerr << "setting direction to " << argument << endl;
     setDirection(argument);
     break;
     // get value and put in accumulator
@@ -272,7 +272,7 @@ void Cell::executeInstruction(int *index, int recursionDepth) {
     ++*index;
     accNum = getArgument(index) % 2;
     argument = getArgument(index);
-    cout << "setting accumulator " << accNum << " to " << argument << endl;
+    cerr << "setting accumulator " << accNum << " to " << argument << endl;
     m_accumulator[accNum] = argument;
     break;
     // operation accumulator by value
@@ -284,36 +284,36 @@ void Cell::executeInstruction(int *index, int recursionDepth) {
     argument = getArgument(index);
     switch (operation) {
     case 0:
-      cout << "adding " << argument << " to accumulator " << accNum << ": " << m_accumulator[accNum] << endl;
+      cerr << "adding " << argument << " to accumulator " << accNum << ": " << m_accumulator[accNum] << endl;
       m_accumulator[accNum] += argument;
       break;
     case 1:
-      cout << "subtracting " << argument << " from accumulator " << accNum << ": " << m_accumulator[accNum] << endl;
+      cerr << "subtracting " << argument << " from accumulator " << accNum << ": " << m_accumulator[accNum] << endl;
       m_accumulator[accNum] -= argument;
       break;
     case 2:
-      cout << "multiplying " << argument << " with accumulator " << accNum << ": " << m_accumulator[accNum] << endl;
+      cerr << "multiplying " << argument << " with accumulator " << accNum << ": " << m_accumulator[accNum] << endl;
       m_accumulator[accNum] *= argument;
       break;
     case 3:
-      cout << "dividing " << argument << " from accumulator " << accNum << ": " <<  m_accumulator[accNum] << endl;
+      cerr << "dividing " << argument << " from accumulator " << accNum << ": " <<  m_accumulator[accNum] << endl;
       m_accumulator[accNum] /= argument;
       break;
     case 4:
-      cout << "moduloing " << argument << " from accumulator " << accNum << ": " << m_accumulator[accNum] << endl;
+      cerr << "moduloing " << argument << " from accumulator " << accNum << ": " << m_accumulator[accNum] << endl;
       m_accumulator[accNum] %= argument;
       break;
     default:
       break;
     }
-    cout << "result " << m_accumulator[accNum] << endl;
+    cerr << "result " << m_accumulator[accNum] << endl;
     break;
     // repeat next instruction
   case 'c':
   case 'C':
     ++*index;                                      
     times = getArgument(index);
-    cout << "repeating instruction " << m_genome->getChar(*index) << " " << times << " times" << endl;
+    cerr << "repeating instruction " << m_genome->getChar(*index) << " " << times << " times" << endl;
     for (int j = 0; j < times; j++) {
       placeholder = *index;
       executeInstruction(&placeholder, recursionDepth);
@@ -326,26 +326,26 @@ void Cell::executeInstruction(int *index, int recursionDepth) {
     ++*index;
     accNum = getArgument(index) % 2;
     argument = getArgument(index);
-    cout << "checking if " << argument << " is less than accumulator " << accNum << ": " << m_accumulator[accNum] << endl;
+    cerr << "checking if " << argument << " is less than accumulator " << accNum << ": " << m_accumulator[accNum] << endl;
     if (argument < m_accumulator[accNum]) {
-      cout << "result true" << endl;
+      cerr << "result true" << endl;
       executeInstruction(index, recursionDepth);
     }                           
     else {
-      cout << "result false" << endl;
+      cerr << "result false" << endl;
       ins = m_genome->getChar(*index);
       ++*index;
       getArgument(index);
       if (ins == 'a' || ins == 'A') {
-        cout << "skipping instruction A" << endl;
+        cerr << "skipping instruction A" << endl;
         getArgument(index);
       }
       else if (ins == '3' || ins == 'b' || ins == 'B') {
-        cout << "skipping instruction " << ins << endl;
+        cerr << "skipping instruction " << ins << endl;
         getArgument(index);
         getArgument(index);
       }
-      else {cout << "skipping single operand instruction" << endl;}
+      else {cerr << "skipping single operand instruction" << endl;}
     }
     break;
     // execute if arg equal to acc
@@ -354,26 +354,26 @@ void Cell::executeInstruction(int *index, int recursionDepth) {
     ++*index;                                 
     accNum = getArgument(index) % 2;
     argument = getArgument(index);
-    cout << "checking if " << argument << " is equal to accumulator " << accNum << ": " << m_accumulator[accNum] << endl;
+    cerr << "checking if " << argument << " is equal to accumulator " << accNum << ": " << m_accumulator[accNum] << endl;
     if (argument == m_accumulator[accNum]) {       
-      cout << "result true" << endl;
+      cerr << "result true" << endl;
       executeInstruction(index, recursionDepth);                   
     }                                              
     else {                          
-      cout << "result false" << endl;               
+      cerr << "result false" << endl;               
       ins = m_genome->getChar(*index);        
       ++*index;                                    
       getArgument(index);
       if (ins == 'a' || ins == 'A') {
-        cout << "skipping instruction A" << endl;
+        cerr << "skipping instruction A" << endl;
         getArgument(index);                        
       }                  
       else if (ins == '3' || ins == 'b' || ins == 'B') {
-        cout << "skipping instruction " << ins << endl;
+        cerr << "skipping instruction " << ins << endl;
         getArgument(index);
         getArgument(index);
       }
-      else {cout << "skipping single operand instruction" << endl;}
+      else {cerr << "skipping single operand instruction" << endl;}
     }                                              
     break;                                                
     // execute if arg above acc
@@ -382,26 +382,26 @@ void Cell::executeInstruction(int *index, int recursionDepth) {
     ++*index;                      
     accNum = getArgument(index);
     argument = getArgument(index);
-    cout << "checking if " << argument << " is greater than accumulator " << accNum << ": " << m_accumulator[accNum] << endl;
+    cerr << "checking if " << argument << " is greater than accumulator " << accNum << ": " << m_accumulator[accNum] << endl;
     if (argument > m_accumulator[accNum]) {       
-      cout << "result true" << endl;
+      cerr << "result true" << endl;
       executeInstruction(index, recursionDepth);                   
     }                                              
     else {                          
-      cout << "result false" << endl;               
+      cerr << "result false" << endl;               
       ins = m_genome->getChar(*index);        
       ++*index;                                    
       getArgument(index);                          
       if (ins == 'a' || ins == 'A') {
-        cout << "skipping instruction A" << endl;
+        cerr << "skipping instruction A" << endl;
         getArgument(index);                        
       }   
       else if (ins == '3' || ins == 'b' || ins == 'B') {
-        cout << "skipping instruction " << ins << endl;
+        cerr << "skipping instruction " << ins << endl;
         getArgument(index);
         getArgument(index);
       }
-      else {cout << "skipping single operand instruction" << endl;}
+      else {cerr << "skipping single operand instruction" << endl;}
     }                                              
     break;                                                                                            
   default:
@@ -562,13 +562,13 @@ void Cell::positionCell(int budPoint) {
   return;
 }
 
-void Cell::processGene(int geneNum, int recursionDepth) {
-  if (recursionDepth > 3000) {return;}
+void Cell::processGene(unsigned int geneNum, int recursionDepth) {
+  if (recursionDepth > 50) {return;}
   
   int i = m_genome->getGeneStart(geneNum) + 1;
   while (m_genome->getChar(i) != '1') {
     executeInstruction(&i, recursionDepth);
-    //cout << "geneNum: " << geneNum << endl;
-    //cout << "shape: " << m_shape << endl;  
+    //cerr << "geneNum: " << geneNum << endl;
+    //cerr << "shape: " << m_shape << endl;  
   }
 }

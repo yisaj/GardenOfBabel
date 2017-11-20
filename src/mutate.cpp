@@ -6,22 +6,27 @@
 
 using namespace std;
 
-static const int MUTATION_CHANCE = 3;
+static const int MUTATION_CHANCE = 1;
 static const char HEX_LETTERS[16] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
 int main (int argc, char *argv[]) {
-  if (argc != 3) { return 1; }
+  bool force = false;
+  if (argc != 1) {
+    if (argc == 2) {
+      string a = argv[1];
+      if (a != "-f") { return 1; }
+      force = true;
+    }
+    else {
+      return 1;
+    }
+  }
 
-  char *genomeFileName = argv[1];
-  char *mutantFileName = argv[2];
-
-  ifstream genomeFile(genomeFileName);
-  if (!genomeFile.is_open()) { return 2; }
-  
-  char buf;
+  string buf;
   string genome;
-  while (genomeFile.get(buf)) {
-    genome += buf;
+  while (!cin.eof()) {
+    getline(cin, buf);
+    genome += buf + '\n';
   }
 
   // check for a malformed genome
@@ -60,17 +65,15 @@ int main (int argc, char *argv[]) {
       }
     }
     validGenome = true;
-    try {
-      new Genome(mutantGenome);
-    } catch(...) {
-      validGenome = false;
+    if (!force) {
+      try {
+        new Genome(mutantGenome);
+      } catch(...) {
+        validGenome = false;
+      }
     }
   }
 
-  ofstream mutantFile(mutantFileName);
-  if (!mutantFile.is_open()) { return 3; }
-  mutantFile << mutantGenome;
-  mutantFile.close();
-
+  cout << mutantGenome;
   return 0;
 }
