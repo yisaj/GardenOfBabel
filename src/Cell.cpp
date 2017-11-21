@@ -3,6 +3,8 @@
 #include <cmath>
 #include <iostream>
 
+static const int MAX_NUM_CELLS = 50;
+static const int MAX_RECURSION_DEPTH = 50;
 static const double PI = 3.14159265;
 
 Cell::Cell(Plant *plant, Cell *parent, Genome *genome, int cellNumber, int budPoint, int direction, int startGene) {
@@ -24,6 +26,7 @@ Cell::Cell(Plant *plant, Cell *parent, Genome *genome, int cellNumber, int budPo
 }
 
 void Cell::grow() {
+  if (m_plant->getNumCells() > MAX_NUM_CELLS) { return; }
   cerr << m_cell_number << " Cell Growing" << endl;
   if (m_parent == nullptr) {
     m_x = 0;
@@ -563,7 +566,7 @@ void Cell::positionCell(int budPoint) {
 }
 
 void Cell::processGene(unsigned int geneNum, int recursionDepth) {
-  if (recursionDepth > 50) {return;}
+  if (recursionDepth > MAX_RECURSION_DEPTH) {return;}
   
   int i = m_genome->getGeneStart(geneNum) + 1;
   while (m_genome->getChar(i) != '1') {
