@@ -4,9 +4,7 @@
 #*#
 *.svg
 *.o
-render
-cross
-mutate
+test
 flowergenomes/
 node_modules/
 bin/

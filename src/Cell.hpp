@@ -27,6 +27,7 @@ class Cell {
   int getDirection() const;
   int getFillColor() const;
   int getLineColor() const;
+  int getNumInstructions() const;
 
   void setHeight(int height);
   void setWidth(int width);
@@ -52,6 +53,7 @@ class Cell {
   int m_direction;
   int m_fill_color;
   int m_line_color;
+  int m_num_instructions;
   
   int m_accumulator[2];
 
@@ -60,6 +62,7 @@ class Cell {
   int getAttribute(int att);
   void positionCell(int budPoint);
   void processGene(unsigned int geneNum, int recursionDepth);
+  void incNumInstructions();
 };
 
 #endif

@@ -5,6 +5,7 @@
 
 static const int MAX_NUM_CELLS = 50;
 static const int MAX_RECURSION_DEPTH = 50;
+static const int MAX_NUM_INSTRUCTIONS = 500;
 static const double PI = 3.14159265;
 
 Cell::Cell(Plant *plant, Cell *parent, Genome *genome, int cellNumber, int budPoint, int direction, int startGene) {
@@ -22,6 +23,7 @@ Cell::Cell(Plant *plant, Cell *parent, Genome *genome, int cellNumber, int budPo
   m_fill_color = 0x7cffc2;
   m_height = 0;
   m_width = 0;
+  m_num_instructions = 0;
   cerr << cellNumber << " Cell Constructed" << endl;
 }
 
@@ -106,6 +108,10 @@ int Cell::getLineColor() const {
   return m_line_color;
 }
 
+int Cell::getNumInstructions() const {
+  return m_num_instructions;
+}
+
 // SETTERS
 void Cell::setHeight(int height) {
   m_height = height;
@@ -137,6 +143,10 @@ void Cell::setFillColor(int fillColor) {
 
 void Cell::setLineColor(int lineColor) {
   m_line_color = lineColor;
+}
+
+void Cell::incNumInstructions() {
+  m_num_instructions++;
 }
 
 // PRIVATE UTILS
@@ -410,6 +420,8 @@ void Cell::executeInstruction(int *index, int recursionDepth) {
   default:
     break;
   }
+
+  incNumInstructions();
 }
 
 
@@ -569,7 +581,7 @@ void Cell::processGene(unsigned int geneNum, int recursionDepth) {
   if (recursionDepth > MAX_RECURSION_DEPTH) {return;}
   
   int i = m_genome->getGeneStart(geneNum) + 1;
-  while (m_genome->getChar(i) != '1') {
+  while (m_genome->getChar(i) != '1' && getNumInstructions() < MAX_NUM_INSTRUCTIONS) {
     executeInstruction(&i, recursionDepth);
     //cerr << "geneNum: " << geneNum << endl;
     //cerr << "shape: " << m_shape << endl;  
