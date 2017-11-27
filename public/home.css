@@ -1,18 +1,66 @@
-textarea {
-    height: 500px;
-    width: 200px;
-    resize: none;
+body {
+    margin: 0px;
 }
 
-input {
-    
+#paneContainer {
+    width: 100wh;
+    height: 100vh;
+    display: flex;
 }
 
-#flowerContainer {
+#inputPane {
+    width: 50%;
+    float: left;
+    margin: 10px;
+    display: flex;
+    flex-flow: column;
+}
+
+#outputPane {
+    float: left;
+    width: 50%;
+    margin: 10px;
+    display: flex;
+}
+
+#buttonContainer {
+    flex: 0 1 auto;
+}
+
+#genomeSelect {
+    float: left;
+}
+
+#operationSelect {
     float: right;
-    display: inline;
 }
 
-div {
+#textContainer {
+    margin: 10px 0px 0px 0px;
+    flex: 1;
+}
+
+#inputPane textarea {
+    resize: none;
     height: 100%;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.outputContainer {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 10px solid gray;
+    float: left;
+    height: 100%;
+    width: 100%;
+}
+
+#alertBox {
+    border: 2px solid red;
+    position: absolute;
+    margin: 10px;
 }

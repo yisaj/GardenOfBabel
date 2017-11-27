@@ -3,9 +3,9 @@
 #include <cmath>
 #include <iostream>
 
-static const int MAX_NUM_CELLS = 50;
+static const int MAX_NUM_CELLS = 200;
 static const int MAX_RECURSION_DEPTH = 50;
-static const int MAX_NUM_INSTRUCTIONS = 500;
+static const int MAX_NUM_INSTRUCTIONS = 300;
 static const double PI = 3.14159265;
 
 Cell::Cell(Plant *plant, Cell *parent, Genome *genome, int cellNumber, int budPoint, int direction, int startGene) {
@@ -150,9 +150,8 @@ void Cell::incNumInstructions() {
 }
 
 // PRIVATE UTILS
-unsigned int Cell::getArgument(int *index, bool hex) {
+int Cell::getArgument(int *index, bool hex) {
   char prefix = m_genome->getChar(*index);
-  short s;
 
   // immediate value
   if (prefix == '2' && hex) {
@@ -162,8 +161,7 @@ unsigned int Cell::getArgument(int *index, bool hex) {
   }
   else if (prefix == '2' && !hex) {
     *index += 5;
-    s = stoi(m_genome->getSubstring(*index - 4, 4), 0, 16);
-    return s;
+    return stoi(m_genome->getSubstring(*index - 4, 4), 0, 16);
   }
   // cell value
   else if (prefix == '3') {
@@ -224,6 +222,7 @@ void Cell::executeInstruction(int *index, int recursionDepth) {
   case '2':
     ++*index;
     nextGene = getArgument(index) % m_genome->getGeneCount();
+    if (nextGene < 0) { nextGene = -nextGene; }
     cerr << "jumping to gene " << nextGene << endl;
     processGene(nextGene, recursionDepth + 1);
     break;
@@ -528,8 +527,8 @@ void Cell::positionCell(int budPoint) {
     }
     // center
     else if (budPoint == 1) {      
-      m_x = parentX + parentHeight * tan(54 / 180.0 * PI) / tan(72 / 180.0 * PI) * sint;
-      m_y = parentY + parentHeight * tan(54 / 180.0 * PI) / tan(72 / 180.0 * PI) * cost;
+      m_x = parentX + parentHeight * (1.0 - tan(54 / 180.0 * PI) / tan(72 / 180.0 * PI)) * sint;
+      m_y = parentY + parentHeight * (1.0 - tan(54 / 180.0 * PI) / tan(72 / 180.0 * PI)) * cost;
     }
     // 8 o clock vertex
     else if (budPoint == 2) {
@@ -563,8 +562,8 @@ void Cell::positionCell(int budPoint) {
     // edge
     else {
       budPoint = -(budPoint - 90);
-      w = parentWidth * cos(budPoint * PI / 180.0);
-      h = parentHeight * sin(budPoint * PI / 180.0);
+      w = parentWidth / 2.0 * cos(budPoint * PI / 180.0);
+      h = parentHeight / 2.0 * sin(budPoint * PI / 180.0);
 
       m_x = parentX + h * sint + w * cost;
       m_y = parentY + h * cost - w * sint;

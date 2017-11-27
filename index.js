@@ -1,6 +1,7 @@
 const fs = require('fs');
 const http = require('http');
 const url = require('url');
+const devnull = require('dev-null');
 const { spawn } = require('child_process');
 
 let routes = {};
@@ -25,6 +26,7 @@ function postData(req, res, path) {
         const child = spawn('./bin/render', ['-w'], { shell: true });
         req.pipe(child.stdin);
         child.stdout.pipe(res);
+        child.stderr.pipe(devnull());
 
         child.on('exit', function(code, signal) {
             console.log('render.cpp completed with error code: ' + code);
@@ -34,7 +36,8 @@ function postData(req, res, path) {
         const child = spawn('./bin/mutate', { shell: true });
         req.pipe(child.stdin);
         child.stdout.pipe(res);
-        
+        child.stderr.pipe(devnull());
+
         child.on('exit', function(code, signal) {
             console.log('mutate.cpp completed with error code: ' + code);
         });
@@ -43,6 +46,7 @@ function postData(req, res, path) {
         const child = spawn('./bin/cross', ['-s'], { shell: true });
         req.pipe(child.stdin);
         child.stdout.pipe(res);
+        child.stderr.pipe(devnull());
 
         child.on('exit', function(code, signal) {
             console.log('cross.cpp completed with error code: ' + code);

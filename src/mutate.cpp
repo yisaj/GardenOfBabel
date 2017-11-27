@@ -28,7 +28,8 @@ int main (int argc, char *argv[]) {
     getline(cin, buf);
     genome += buf + '\n';
   }
-
+  genome.pop_back();
+  
   // check for a malformed genome
   new Genome(genome);
 
@@ -36,7 +37,7 @@ int main (int argc, char *argv[]) {
   bool validGenome = false;
   random_device r;
   default_random_engine engine(r());
-  uniform_int_distribution<int> mut_dist(0, 99);
+  uniform_int_distribution<int> mut_dist(0, 999);
   uniform_int_distribution<int> hex_dist(0, 15);
 
   while (!validGenome) {
@@ -49,7 +50,10 @@ int main (int argc, char *argv[]) {
           mutantGenome += genome[i];
         }
         else {
-          if (genome[i] != ' ' && genome[i] != '\n' && genome[i] != '\r' && mut_dist(engine) < MUTATION_CHANCE) {
+          if (genome[i] != ' ' && 
+              genome[i] != '\n' && 
+              genome[i] != '\r' && 
+              mut_dist(engine) < MUTATION_CHANCE) {
             mutantGenome += HEX_LETTERS[hex_dist(engine)];
           }
           else {

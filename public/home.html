@@ -1,3 +1,43 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/home.css" />
+  </head>
+  <body>
+    <div id="paneContainer">
+      <div id="inputPane">
+        <div id="buttonContainer">
+          <div id="genomeSelect">
+            <button>Genome 1</button>
+            <button>Genome 2</button>
+            <button>Genome 3</button>
+          </div>
+          <div id="operationSelect">
+            <button>Render</button>
+            <button>Mutate</button>
+            <button>Cross</button>
+          </div>
+        </div>
+        
+        <div id="textContainer">
+          <textarea placeholder="Genome 1"></textarea>
+          <textarea placeholder="Genome 2"></textarea>
+          <textarea placeholder="Genome 3"></textarea>
+        </div>
+      </div>
+      <div id="outputPane">
+        <div id="alertBox">The alerts go here.</div>
+        <div class="outputContainer"></div>
+        <div class="outputContainer"></div>
+        <div class="outputContainer"></div>
+      </div>
+    </div>
+    <script src="/home.js"></script>
+  </body>
+</html>
+
+<!--
 <!doctype HTML>
 
 <html>
@@ -6,15 +46,26 @@
   </head>
 
   <body>
-    <input type="button" id="renderButton" value="Render Output">
-    <input type="button" id="mutateButton" value="Mutate Parent One">
-    <input type="button" id="crossButton" value="Cross Parent One and Two">
-    <br>
-    <textarea id="inputOne" placeholder="Parent One"></textarea>
-    <textarea id="inputTwo" placeholder="Parent Two"></textarea>
-    <textarea id="output" placeholder="Output"></textarea>
-    <div id="flowerContainer"></div>
+    <div id="paneWrapper">
+      <div id="inputPane">
+        <div id="buttonWrapper">
+          <input type="button" class="genomeSelect" value="Genome 1">
+          <input type="button" class="genomeSelect" value="Genome 2">
+          <input type="button" class="genomeSelect" value="Genome 3">
+          <input type="button" class="operationSelect" value="Render">
+          <input type="button" class="operationSelect" value="Mutate">
+          <input type="button" class="operationSelect" value="Cross">
+        </div>
+        <div id="textWrapper">
+          <textarea placeholder="Type here."></textarea>
+        </div>
+      </div>
+      <div id="displayPane">
+      </div>
+    </div>
+
     <script src="/home.js"></script>
   </body>
 </html>
 
+-->

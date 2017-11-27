@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -Wall -g -O2 -std=gnu++0x
+CXXFLAGS = -Wall -O2 -std=gnu++0x
 SRC = ../src/
 
 all: render cross mutate

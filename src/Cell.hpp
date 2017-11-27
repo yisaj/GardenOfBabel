@@ -57,7 +57,7 @@ class Cell {
   
   int m_accumulator[2];
 
-  unsigned int getArgument(int *index, bool hex = false);
+  int getArgument(int *index, bool hex = false);
   void executeInstruction(int *index, int recursionDepth);
   int getAttribute(int att);
   void positionCell(int budPoint);

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <stack>
+#include <queue>
 #include <vector>
 #include <fstream>
 #include <cmath>
@@ -16,15 +17,16 @@ void drawLine(Cell *cell) {
   double x = cell->getX();
   double y = cell->getY();
   int height = cell->getHeight();
-  int width = cell->getWidth();
+  //int width = cell->getWidth();
   int direction = cell->getDirection();
   int lineColor = cell->getLineColor() & 0x00ffffff;
 
   cout << "<line x1=\"" << x << "\" y1=\"" << y
        << "\" x2=\"" << x << "\" y2=\"" << (y + height)
-       << "\" transform=\"rotate(-" << direction << " " << x << " " << y
+       << "\" transform=\"rotate(" << -direction << " " << x << " " << y
        << ")\" stroke=\"#" << hex << lineColor << dec
-       << "\" stroke-width=\"" << width << "\"/>\n"; 
+       << "\" stroke-width=\"10" 
+       << "\" stroke-linecap=\"round\"/>\n"; 
 }
 
 void drawTriangle(Cell *cell) {
@@ -39,7 +41,7 @@ void drawTriangle(Cell *cell) {
   cout << "<polygon points=\"" << x << "," << y
        << " " << (x + width / 2.0) << "," << (y + height)
        << " " << (x - width / 2.0) << "," << (y + height)
-       << "\" transform=\"rotate(-" << direction << " " << x << " " << y
+       << "\" transform=\"rotate(" << -direction << " " << x << " " << y
        << ")\" stroke=\"#" << hex << lineColor
        << "\" fill=\"#" << fillColor << dec
        << "\" stroke-width=\"" << STROKE_WIDTH << "\"/>\n";
@@ -58,7 +60,7 @@ void drawRhombus(Cell *cell) {
        << " " << (x + width / 2.0) << "," << (y + height / 2.0)
        << " " << x << "," << (y + height)
        << " " << (x - width / 2.0) << "," << (y + height / 2.0)
-       << "\" transform=\"rotate(-" << direction << " " << x << " " << y
+       << "\" transform=\"rotate(" << -direction << " " << x << " " << y
        << ")\" stroke=\"#" << hex << lineColor
        << "\" fill=\"#" << fillColor << dec
        << "\" stroke-width=\"" << STROKE_WIDTH << "\"/>\n";
@@ -82,7 +84,7 @@ void drawPentagon(Cell *cell) {
            << " " << (x + sideLength / 2.0) << "," << (y + height)
            << " " << (x - sideLength / 2.0) << "," << (y + height)
            << " " << (x - botX) << "," << (y + botY)
-           << "\" transform=\"rotate(-" << direction << " " << x << " " << y
+           << "\" transform=\"rotate(" << -direction << " " << x << " " << y
            << ")\" stroke=\"#" << hex << lineColor
            << "\" fill=\"#" << fillColor << dec
            << "\" stroke-width=\"" << STROKE_WIDTH << "\"/>\n";
@@ -99,7 +101,7 @@ void drawEllipse(Cell *cell) {
   
   cout << "<ellipse cx=\"" << x << "\" cy=\"" << y
        << "\" rx=\"" << (width / 2.0) << "\" ry=\"" << (height / 2.0)
-       << "\" transform=\"rotate(-" << direction << " " << x << " " << y
+       << "\" transform=\"rotate(" << -direction << " " << x << " " << y
        << ")\" stroke=\"#" << hex << lineColor
        << "\" fill=\"#" << fillColor << dec
        << "\" stroke-width=\"" << STROKE_WIDTH << "\"/>\n";
@@ -109,7 +111,7 @@ int main(int argc, char *argv[]) {
   bool web = false;
   if (argc > 1) {
     string arg = argv[1];
-    web = arg == "-w";
+    web = (arg == "-w");
   }
 
   string buf;
@@ -120,11 +122,11 @@ int main(int argc, char *argv[]) {
   }
   cerr << genome;
   Plant plant(genome);
-  stack<Cell *> undrawnCells;
+  queue<Cell *> undrawnCells;
   undrawnCells.push(plant.getRootCell());
 
   if (web) {
-    cout << "<svg width=\"100%\" height=\"100%\" viewbox=\"0 0 1000 1000\" xmlns=\"http://www.w3.org/2000/svg\">\n";
+    cout << "<svg width=\"100%\" height=\"100%\" viewbox=\"0 0 1000 1000\" preserveAspectRatio=\"xMidYMax meet\" xmlns=\"http://www.w3.org/2000/svg\">\n";
   }
   else {
     cout << "<svg width=\"1000\" height=\"1000\" xmlns=\"http://www.w3.org/2000/svg\">\n";
@@ -133,7 +135,7 @@ int main(int argc, char *argv[]) {
   cout << "<g transform=\"translate(500, 1000) matrix(1, 0, 0, -1, 0, 0)\">\n";
 
   while (!undrawnCells.empty()) {
-    Cell *curCell = undrawnCells.top();
+    Cell *curCell = undrawnCells.front();
     undrawnCells.pop();
 
     switch (curCell->getShape()) {
