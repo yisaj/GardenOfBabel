@@ -31,7 +31,11 @@ int main (int argc, char *argv[]) {
   genome.pop_back();
   
   // check for a malformed genome
-  new Genome(genome);
+  Genome g(genome);
+  if (!g.isValid()) {
+    cout << "ERROR: Invalid genome. Error at index " << g.getErr() << ".";
+    return 1;
+  }
 
   string mutantGenome;
   bool validGenome = false;
@@ -70,11 +74,8 @@ int main (int argc, char *argv[]) {
     }
     validGenome = true;
     if (!force) {
-      try {
-        new Genome(mutantGenome);
-      } catch(...) {
-        validGenome = false;
-      }
+      Genome g(mutantGenome);
+      validGenome = g.isValid();
     }
   }
 

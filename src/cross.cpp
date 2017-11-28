@@ -64,9 +64,22 @@ int main(int argc, char* argv[]) {
   cerr << "%%%%" << endl << parentOneGenome << endl << "%%%%%%%" << endl << parentTwoGenome << endl;
 
   Genome parentOne(parentOneGenome);
-  Genome parentTwo(parentTwoGenome);
+  if (!parentOne.isValid()) {
+    cout << "ERROR: Invalid parent one genome. Error at index " << parentOne.getErr() << ".";
+    return 1;
+  }
 
-  if (parentOne.getGeneCount() != parentTwo.getGeneCount()) { return 4; }
+  Genome parentTwo(parentTwoGenome);
+  if (!parentTwo.isValid()) {
+    cout << "ERROR: Invalid parent two genome. Error at index " << parentTwo.getErr() << ".";
+  }
+
+  if (parentOne.getGeneCount() != parentTwo.getGeneCount()) { 
+    cout << "ERROR: Parent gene count mismatch. Parent one: " 
+         << parentOne.getGeneCount() << " genes. Parent two: " 
+         << parentTwo.getGeneCount() << " genes.";
+    return 4; 
+  }
 
   string childGenome;
   random_device r;

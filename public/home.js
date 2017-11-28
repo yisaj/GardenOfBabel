@@ -1,6 +1,6 @@
 const inputElements = document.querySelectorAll('#inputPane textarea');
 const outputContainers = document.querySelectorAll('.outputContainer');
-const genomeButtons = document.querySelectorAll('#genomeSelect button');
+const genomeButtons = document.querySelectorAll('#genomeSelect div');
 const operationButtons = document.querySelectorAll('#operationSelect button');
 const alertBox = document.querySelector('#alertBox');
 
@@ -23,7 +23,7 @@ function makeAlert(message) {
     alertBox.innerHTML = message;
     (function fade() {
         elapsed++;
-        if (elapsed > 100) {
+        if (elapsed > 60) {
             alertBox.style.opacity -= 0.1;
         }
         if (alertBox.style.opacity > 0) {
@@ -32,12 +32,13 @@ function makeAlert(message) {
     })();
 }
 
-
 // hide everything except for the first genome and its output
 inputElements[1].style.display = 'none';
 inputElements[2].style.display = 'none';
 outputContainers[1].style.display = 'none';
 outputContainers[2].style.display = 'none';
+genomeButtons[0].style['background-color'] = '#2fd637';
+genomeButtons[0].style.color = 'white';
 alertBox.style.opacity = 0;
 let curGenome = 0;
 
@@ -47,11 +48,15 @@ for (let i = 0; i < genomeButtons.length; i++) {
         curGenome = i;
         inputElements[i].style.display = null;
         outputContainers[i].style.display = null;
+        genomeButtons[i].style['background-color'] = '#2fd637';
+        genomeButtons[i].style.color = 'white';
 
         for (let j = 0; j < inputElements.length; j++) {
             if (i !== j) {
                 inputElements[j].style.display = 'none';
                 outputContainers[j].style.display = 'none';
+                genomeButtons[j].style['background-color'] = null;
+                genomeButtons[j].style.color = null;
             }
         }
     });
@@ -61,11 +66,14 @@ for (let i = 0; i < genomeButtons.length; i++) {
 operationButtons[0].addEventListener('click', function(e) {
     let genome = curGenome;
     makeRequest('POST', '/render', inputElements[genome].value, function(renderRes) {
-        if (renderRes.length === 0) {
-            // alert the user of the error
-            makeAlert('Invalid input genome.');
+        if (renderRes.substring(0, 7) !== "ERROR: ") {
+            outputContainers[genome].innerHTML = renderRes;
         }
-        outputContainers[genome].innerHTML = renderRes;
+        else {
+            // alert the user of the error
+            makeAlert(renderRes);
+            outputContainers[genome].innerHTML = "";
+        }
     });
 });
 
@@ -74,20 +82,24 @@ operationButtons[1].addEventListener('click', function(e) {
     let genome = curGenome;
 
     makeRequest('POST', '/mutate', inputElements[genome].value, function(mutateRes) {
-        if (mutateRes !== 0) {
+        if (mutateRes.substring(0,7) !== "ERROR: ") {
+            console.log(mutateRes);
             inputElements[genome].value = mutateRes;
             
             makeRequest('POST', '/render', mutateRes, function(renderRes) {
-                if (renderRes.length === 0) {
-                    // alert the user of the error
-                    makeAlert('Invalid input genome.');
+                if (renderRes.substring(0, 7) !== "ERROR: ") {
+                    outputContainers[genome].innerHTML = renderRes;
                 }
-                outputContainers[genome].innerHTML = renderRes;
+                else {
+                    // alert the user of the error
+                    makeAlert(renderRes);
+                    outputContainers[genome].innerHTML = "";
+                }
             });
         }
         else {
             // alert the user of the error
-            makeAlert('Invalid mutation result genome.');
+            makeAlert(mutateRes);
         }
     });
 });
@@ -95,28 +107,31 @@ operationButtons[1].addEventListener('click', function(e) {
 // add cross logic
 operationButtons[2].addEventListener('click', function(e) {
     let genome = curGenome;
-    let parentOne = genome + 1;
-    if (parentOne >= inputElements.length) { parentOne = 0; }
-    let parentTwo = genome - 1;
-    if (parentTwo < 0) { parentTwo = inputElements.length - 1; }
+    let parentOne = genome - 1;
+    if (parentOne < 0) { parentOne = inputElements.length - 1; }
+    let parentTwo = genome + 1;
+    if (parentTwo >= inputElements.length) { parentTwo = 0; }
 
     makeRequest('POST', '/cross',
                 inputElements[parentOne].value + " $ " + inputElements[parentTwo].value,
                 function(crossRes) { 
-                    if (crossRes.length !== 0) {
+                    if (crossRes.substring(0, 7) !== "ERROR: ") {
                         inputElements[genome].value = crossRes;
                         
                         makeRequest('POST', '/render', crossRes, function(renderRes) {
-                            if (renderRes.length === 0) {
-                                // alert the user of the error
-                                makeAlert('Invalid child genome.');
+                            if (renderRes.substring(0, 7) !== "ERROR: ") {
+                                outputContainers[genome].innerHTML = renderRes;
                             }
-                            outputContainers[genome].innerHTML = renderRes;
+                            else {
+                                // alert the user of the error
+                                makeAlert(renderRes);
+                                outputContainers[genome].innerHTML = "";
+                            }
                         });
                     }
                     else {
                         // alert the user of the error
-                        makeAlert('Invalid parent genome or gene number mismatch.');
+                        makeAlert(crossRes);
                     }
                 });
 });

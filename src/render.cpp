@@ -122,6 +122,11 @@ int main(int argc, char *argv[]) {
   }
   cerr << genome;
   Plant plant(genome);
+  if (!plant.isValid()) {
+    cout << "ERROR: Invalid genome. Error at index " << plant.getErr() << ".";
+    return 1;
+  }
+
   queue<Cell *> undrawnCells;
   undrawnCells.push(plant.getRootCell());
 

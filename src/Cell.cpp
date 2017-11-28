@@ -232,6 +232,7 @@ void Cell::executeInstruction(int *index, int recursionDepth) {
     for (int j = 0; j < 3; j++) {
       arguments[j] = getArgument(index);
     }
+    arguments[2] = arguments[2] % m_genome->getGeneCount();
     cerr << "spawning cell at position " << arguments[0] << ", with direction " << arguments[1] << ", and gene " << arguments[2] << endl;
     m_children.push_back(new Cell(m_plant, this, m_genome, m_cell_number + 1, arguments[0], arguments[1], arguments[2]));
     m_plant->incNumCells();

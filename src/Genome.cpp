@@ -23,11 +23,9 @@ Genome::Genome(string text) {
       comment = false;
     }
   }
-  
+
   int e = processGeneIndices(m_text);
-  if (e != -1) {
-    throw runtime_error("malformed genome at " + to_string(e) + " around " + m_text.substr(e, 7));
-  }
+  m_err = e;
   m_geneCount = m_gene_starts.size();
 }
 
@@ -49,6 +47,14 @@ string Genome::getSubstring(int pos, int count) const {
 
 int Genome::getGeneCount() const {
   return m_geneCount;
+}
+
+bool Genome::isValid() const {
+  return m_err == -1;
+}
+
+int Genome::getErr() const {
+  return m_err;
 }
 
 int Genome::processGeneIndices(string text) {
