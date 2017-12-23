@@ -1,6 +1,7 @@
 body {
     margin: 0px;
-    background-color: #468c35;
+    background-color: ivory;
+    overflow: hidden;
 }
 
 #paneContainer {
@@ -83,6 +84,8 @@ body {
     padding: 0px 10px 0px 10px;
     font-size: 1.5em;
     border-radius: 3px 3px 0 0;
+    border: 1px solid #0e2b06;
+    border-bottom-style: none;
     user-select: none;
     background-color: #0e2b06;
     color: #a0ffa5;
@@ -92,4 +95,51 @@ body {
 #operationSelect button {
     font-size: 1em;
     font-family: "Cambria Math";
+}
+
+#operationSelect :nth-child(4) {
+    color: red;
+}
+
+#helpContainer {
+    overflow-y: scroll;
+    box-sizing: border-box;
+    position: absolute;
+    right: -50%;
+    padding-left: 10px;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    background-color: #0e2b06;
+}
+
+#helpContent {
+    background-color: #ceffbf;
+    padding: 30px 30px 30px 10px;
+}
+
+#loadExample {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+}
+
+.arg1 { 
+    color: #1978D4;
+}
+
+.arg2 {
+    color: #1D781D;
+}
+
+.arg3 {
+    color: #8B008B;
+}
+
+.argDetail {
+    margin-left: 50px;
+}
+
+#helpContainer h1 {
+    margin-top: 0;
 }

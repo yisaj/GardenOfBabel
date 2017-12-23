@@ -62,7 +62,7 @@ int Genome::processGeneIndices(string text) {
   int i = 0;
   
   // check for invalid characters
-  while (i < len) {
+    while (i < len) {
     if (text[i] == '0' ||
         text[i] == '1' ||
         text[i] == '2' ||

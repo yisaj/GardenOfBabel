@@ -6,6 +6,5 @@
 *.o
 test
 flowergenomes/
-node_modules/
 bin/
 !bin/Makefile

@@ -17,6 +17,7 @@
             <button>Render</button>
             <button>Mutate</button>
             <button>Cross</button>
+            <button>Help</button>
           </div>
         </div>
         
@@ -33,39 +34,72 @@
         <div class="outputContainer"></div>
       </div>
     </div>
-    <script src="/home.js"></script>
-  </body>
-</html>
 
-<!--
-<!doctype HTML>
+    <div id="helpContainer">
+      <div id="helpContent">
+        <h1>Help</h1>
 
-<html>
-  <head>
-    <link rel="stylesheet" type="text/css" href="/home.css" />
-  </head>
+        <p>In the Garden of Babel, all plants are grown to exacting specifications, a "genome" consisting of the hexadecimal characters 0-1 and A-F. Each genome is composed of several genes with instructions that tell a plant's cells what size, shape, and color to take on. Explore the depths of the Garden by designing your own plants, generating offspring, and mutating their genomes.</p>
 
-  <body>
-    <div id="paneWrapper">
-      <div id="inputPane">
-        <div id="buttonWrapper">
-          <input type="button" class="genomeSelect" value="Genome 1">
-          <input type="button" class="genomeSelect" value="Genome 2">
-          <input type="button" class="genomeSelect" value="Genome 3">
-          <input type="button" class="operationSelect" value="Render">
-          <input type="button" class="operationSelect" value="Mutate">
-          <input type="button" class="operationSelect" value="Cross">
-        </div>
-        <div id="textWrapper">
-          <textarea placeholder="Type here."></textarea>
-        </div>
-      </div>
-      <div id="displayPane">
+        <p><span id="loadExample">Click here to load three example flowers.</span></p>
+
+        <p>Every plant begins with cell 0 and gene 0. The cell reads and executes the instructions in gene 0 in order, potentially spawning zero or more children on cell 0. After cell 0 finishes growing, its children cells get the chance to grow, and so on. In the example genomes, each gene is labeled with its function and the type of cell it pertains to: root, stem, leaf, flower, or petal.</p>
+
+        <h3>Operations</h3>
+        <p><b>Render</b> displays the output of the currently selected genome.<br>
+          <b>Mutate</b> randomly changes the characters of the currently selected genome at a probablity of 0.1%.<br>
+          <b>Cross</b> creates a child genome from the two unselected genomes and saves the result to the currently selected genome.</p>
+
+        <h3>Genome Syntax</h3>
+        <p>Gene instructions are single hex characters that take between zero to three arguments. Genome strings are case-insensitive, but non-hex characters are considered invalid. Comments are contained within parentheses "()" and are stripped out before a genome is parsed. Similarly, whitespace has no effect on any output. Hex characters outside of gene delimiters are valid, but have no effect, essentially representing junk DNA.</p>
+
+        <h3>Instruction Reference</h3>
+
+        <b>0</b>:<div class="argDetail">Declare the beginning of a gene.</div>
+        <b>1</b>:<div class="argDetail">Declare the end of a gene.</div>
+        <b>2</b><span class="arg1">[arg1]</span>:<div class="argDetail">Jump to gene with number <span class="arg1">[arg1]</span>.</div> 
+        <b>3</b><span class="arg1">[arg1]</span><span class="arg2">[arg2]</span><span class="arg3">[arg3]</span>:<div class="argDetail">Spawn child cell at position <span class="arg1">[arg1]</span> with direction <span class="arg2">[arg2]</span> starting at gene <span class="arg3">[arg3]</span>.</div>
+        <b>4</b><span class="arg1">[arg1]</span>:<div class="argDetail">Set cell shape to <span class="arg1">[arg1]</span>.</div>
+        <b>5</b><span class="arg1">[arg1]</span>:<div class="argDetail">Set cell outline color to <span class="arg1">[arg1]</span>.</div>
+        <b>6</b><span class="arg1">[arg1]</span>:<div class="argDetail">Set cell fill color to <span class="arg1">[arg1]</span>.</div>
+        <b>7</b><span class="arg1">[arg1]</span>:<div class="argDetail">Set cell height to <span class="arg1">[arg1]</span>.</div>
+        <b>8</b><span class="arg1">[arg1]</span>:<div class="argDetail">Set cell width to <span class="arg1">[arg1]</span>.</div>
+        <b>9</b><span class="arg1">[arg1]</span>:<div class="argDetail">Set cell direction to <span class="arg1">[arg1]</span>.</div>
+        <b>A</b><span class="arg1">[arg1]</span><span class="arg2">[arg2]</span>:<div class="argDetail">Set accumulator <span class="arg1">[arg1]</span> to the value of <span class="arg2">[arg2]</span>.</div>
+        <b>B</b><span class="arg1">[arg1]</span><span class="arg2">[arg2]</span><span class="arg3">[arg3]</span>:<div class="argDetail">Perform operation <span class="arg2">[arg2]</span> on accumulator <span class="arg1">[arg1]</span> with operand <span class="arg3">[arg3]</span>.</div>
+        <b>C</b><span class="arg1">[arg1]</span>:<div class="argDetail">Repeat next instruction <span class="arg1">[arg1]</span> times.</div>
+        <b>D</b><span class="arg1">[arg1]</span><span class="arg2">[arg2]</span>:<div class="argDetail">Execute next instruction if <span class="arg2">[arg2]</span> is less than accumulator <span class="arg1">[arg1]</span>.</div>
+        <b>E</b><span class="arg1">[arg1]</span><span class="arg2">[arg2]</span>:<div class="argDetail">Execute next instruction if <span class="arg2">[arg2]</span> is equal to accumulator <span class="arg1">[arg1]</span>.</div>
+        <b>F</b><span class="arg1">[arg1]</span><span class="arg2">[arg2]</span>:<div class="argDetail">Execute next instruction if <span class="arg2">[arg2]</span> is greater than accumulator <span class="arg1">[arg1]</span>.</div>
+        
+        <h3>Arguments</h3>
+        <p>Arguments can be passed in three ways: as the value of one of the accumulators, as a direct value, or as the value of one the cell's properties.</p>
+        
+        <b>0</b>:<div class="argDetail">The current value of accumulator 0.</div>
+        <b>1</b>:<div class="argDetail">The current value of accumulator 1.</div>
+        <b>2</b>XXXX:<div class="argDetail">The 4-digit hexadecimal value XXXX.</div>
+        <b>2</b>XXXXXX:<div class="argDetail">The 6-digit hexadecimal value XXXXXX, used exclusively for instructions <b>5</b> and <b>6</b>, in order to allow standard 6-digit color codes.</div>
+        <b>3</b>XXXX:<div class="argDetail">The value of cell property XXXX.</div>
+
+        <h3>Cell Properties</h3>
+        <b>0000</b>:<div class="argDetail">Cell number. Each cell has a cell number one greater than its parent, so sibling cells have the same cell number.</div>
+        <b>0001</b>:<div class="argDetail">Cell shape.</div>
+        <b>0002</b>:<div class="argDetail">Cell outline color.</div>
+        <b>0003</b>:<div class="argDetail">Cell fill color.</div>
+        <b>0004</b>:<div class="argDetail">Cell height.</div>
+        <b>0005</b>:<div class="argDetail">Cell width.</div>
+        <b>0006</b>:<div class="argDetail">Cell direction.</div>
+
+        <h3>Cell Accumulators and Calculation</h3>
+        <p>Every cell has two accumulators 0 and 1 that help facillitate more complex behavior. Numerical values can be saved to an accumulator and simple arithmetic operations can be performed on these values. Calculations are performed by instruction <b>B</b> when passed the following values for <span class="arg2">[arg2]</span>.</p>
+
+        <b>0000</b>:<div class="argDetail">Add <span class="arg3">[arg3]</span> to accumulator <span class="arg1">[arg1]</span>.</div>
+        <b>0001</b>:<div class="argDetail">Subtract <span class="arg3">[arg3]</span> from accumulator <span class="arg1">[arg1]</span>.</div>
+        <b>0002</b>:<div class="argDetail">Multiply accumulator <span class="arg1">[arg1]</span> by <span class="arg3">[arg3]</span>.</div>
+        <b>0003</b>:<div class="argDetail">Divide accumulator <span class="arg1">[arg1]</span> by <span class="arg3">[arg3]</span>.</div>
+        <b>0004</b>:<div class="argDetail">Modulo accumulator <span class="arg1">[arg1]</span> by <span class="arg3">[arg3]</span>.</div>
       </div>
     </div>
-
     <script src="/home.js"></script>
   </body>
 </html>
-
--->
